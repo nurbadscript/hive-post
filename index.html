@@ -1,0 +1,118 @@
+<html>
+<head><title>Create Post</title>
+<script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
+   <script>
+      hive.api.setOptions({ url: 'https://anyx.io' });
+      hive.config.set('address_prefix','STM');
+      hive.config.set('chain_id','beeab0de00000000000000000000000000000000000000000000000000000000');
+      hive.config.set('alternative_api_endpoints', ['https://api.hive.blog', 'https://anyx.io']);
+   </script>
+
+<style type="text/css">
+   * {
+      box-sizing: border-box;
+   }
+.mypage{
+   width: 800px;
+   margin: 50px auto;
+   padding: 50px;
+   background: #BAB3B3;
+   border-radius: 5px;
+   box-shadow: 5px 0px 15px #000;
+   -moz-box-shadow: 5px 0px 15px #000;
+   -webkit-box-shadow: 5px 0px 15px #000;
+}
+.mypage h1{
+   color: #9D4242;
+   font-size: 20pt;
+   font-weight: 800;
+   padding: 10px;
+   margin: -40px -30px 10px;
+}
+.mypage input[type="text"], input[type="password"],
+.mypage textarea
+{
+   display: block;
+   width: 100%;
+   font: 17px Arial, Helvetica, sans-serif;
+   border: 0;
+   border-bottom: 2px solid #9D4242;
+   padding: 5px;
+   margin-bottom: 12px;
+   height: 40px;
+   text-transform: lowercase;
+}
+#title, #content {
+   text-transform: none;
+}
+
+.mypage input[type="button"]{
+   background-color: white;
+   border: 2px solid #9D4242;
+   display: inline-block;
+   cursor: pointer;
+   color: #9D4242;
+   font-size: 18px;
+   font-weight: 800;
+   padding: 5px 10px;
+}
+.mypage input[type="button"]:hover {
+   background: linear-gradient(to top left, #BAB3B3, #ffff);
+}
+</style>
+
+</head>
+<body>
+<div class="mypage">
+<h1><center>Create a Post on HIVE</center></h1>
+
+   <input type="text" id="author" placeholder="Author (e.g. zoneboy)" />
+   <input type="password" id="wif" placeholder="Private Posting Key" />
+   <input type="text" id="permlink" placeholder="Unique Permlink (e.g. post-title)" />
+   <input type="text" id="title" placeholder="Title" />
+   <textarea placeholder="Content in Markdown or HTML" id='content'></textarea>
+   <input type="text" id="tag1" placeholder="Tag 1 (Must start with a letter and end with letter or number)" />
+   <input type="text" id="tag2" placeholder="Tag 2 Must start with a letter and end with letter or number)" />
+   <input type="text" id="tag3" placeholder="Tag 3 (Must start with a letter and end with letter or number)" />
+   <input type="text" id="tag4" placeholder="Tag 4 (Must start with a letter and end with letter or number)" />
+   <input type="text" id="tag5" placeholder="Tag 5 (Must start with a letter and end with letter or number)" />
+   <center><input type="button" value="PUBLISH" onClick='publish()'/></center>
+</div>
+
+
+<script>
+function publish() {
+   var wif = document.getElementById('wif').value;
+   var blank = '';
+   var firstTag = document.getElementById('tag1').value;
+   var secondTag = document.getElementById('tag2').value; 
+   var thirdTag = document.getElementById('tag3').value; 
+   var fourthTag = document.getElementById('tag4').value; 
+   var fifthtag = document.getElementById('tag5').value;
+   var author = document.getElementById('author').value;
+   var permlink = document.getElementById('permlink').value;
+   var title = document.getElementById('title').value;
+   var content = document.getElementById('content').value;
+hive.broadcast.comment(
+   wif,
+   blank,
+   firstTag,
+   author,
+   permlink,
+   title,
+   content,
+   // json metadata (additional tags, app name)
+   { tags: [secondTag,thirdTag,fourthTag,fifthtag], 
+      app: 'zoneboy/v1.0' },
+   function (err, result) {
+     if (err)
+       alert('Error posting ' + err);
+     else
+       alert('Successfully posted');
+   }
+);
+}
+
+</script>
+</body>
+</html>
