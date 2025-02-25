@@ -1,118 +1,134 @@
 <html>
-<head><title>Create Post</title>
+<head><title>Comment on Hive</title>
 <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
-   <script>
-      hive.api.setOptions({ url: 'https://anyx.io' });
-      hive.config.set('address_prefix','STM');
-      hive.config.set('chain_id','beeab0de00000000000000000000000000000000000000000000000000000000');
-      hive.config.set('alternative_api_endpoints', ['https://api.hive.blog', 'https://anyx.io']);
-   </script>
+<script>
+   hive.api.setOptions({ url: 'https://anyx.io' });
+   hive.config.set('address_prefix','STM');
+   hive.config.set('chain_id','beeab0de00000000000000000000000000000000000000000000000000000000');
+   hive.config.set('alternative_api_endpoints', ['https://api.hive.blog', 'https://anyx.io']);
+</script>
 
-<style type="text/css">
-   * {
-      box-sizing: border-box;
+<style>
+   * { box-sizing: border-box; }
+   .mypage {
+      width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background: #BAB3B3;
+      border-radius: 5px;
+      box-shadow: 5px 0px 15px #000;
    }
-.mypage{
-   width: 800px;
-   margin: 50px auto;
-   padding: 50px;
-   background: #BAB3B3;
-   border-radius: 5px;
-   box-shadow: 5px 0px 15px #000;
-   -moz-box-shadow: 5px 0px 15px #000;
-   -webkit-box-shadow: 5px 0px 15px #000;
-}
-.mypage h1{
-   color: #9D4242;
-   font-size: 20pt;
-   font-weight: 800;
-   padding: 10px;
-   margin: -40px -30px 10px;
-}
-.mypage input[type="text"], input[type="password"],
-.mypage textarea
-{
-   display: block;
-   width: 100%;
-   font: 17px Arial, Helvetica, sans-serif;
-   border: 0;
-   border-bottom: 2px solid #9D4242;
-   padding: 5px;
-   margin-bottom: 12px;
-   height: 40px;
-   text-transform: lowercase;
-}
-#title, #content {
-   text-transform: none;
-}
-
-.mypage input[type="button"]{
-   background-color: white;
-   border: 2px solid #9D4242;
-   display: inline-block;
-   cursor: pointer;
-   color: #9D4242;
-   font-size: 18px;
-   font-weight: 800;
-   padding: 5px 10px;
-}
-.mypage input[type="button"]:hover {
-   background: linear-gradient(to top left, #BAB3B3, #ffff);
-}
+   .mypage h1 {
+      color: #9D4242;
+      font-size: 20pt;
+      font-weight: 800;
+      text-align: center;
+   }
+   .mypage input, .mypage textarea {
+      display: block;
+      width: 100%;
+      font: 17px Arial, Helvetica, sans-serif;
+      border: 0;
+      border-bottom: 2px solid #9D4242;
+      padding: 5px;
+      margin-bottom: 12px;
+      height: 40px;
+   }
+   .mypage input[type="button"] {
+      background-color: white;
+      border: 2px solid #9D4242;
+      cursor: pointer;
+      color: #9D4242;
+      font-size: 18px;
+      font-weight: 800;
+      padding: 5px 10px;
+      display: block;
+      width: 100%;
+   }
+   .mypage input[type="button"]:hover {
+      background: linear-gradient(to top left, #BAB3B3, #ffff);
+   }
 </style>
-
 </head>
 <body>
 <div class="mypage">
-<h1><center>Create a Post on HIVE</center></h1>
-
-   <input type="text" id="author" placeholder="Author (e.g. zoneboy)" />
-   <input type="password" id="wif" placeholder="Private Posting Key" />
-   <input type="text" id="permlink" placeholder="Unique Permlink (e.g. post-title)" />
-   <input type="text" id="title" placeholder="Title" />
-   <textarea placeholder="Content in Markdown or HTML" id='content'></textarea>
-   <input type="text" id="tag1" placeholder="Tag 1 (Must start with a letter and end with letter or number)" />
-   <input type="text" id="tag2" placeholder="Tag 2 Must start with a letter and end with letter or number)" />
-   <input type="text" id="tag3" placeholder="Tag 3 (Must start with a letter and end with letter or number)" />
-   <input type="text" id="tag4" placeholder="Tag 4 (Must start with a letter and end with letter or number)" />
-   <input type="text" id="tag5" placeholder="Tag 5 (Must start with a letter and end with letter or number)" />
-   <center><input type="button" value="PUBLISH" onClick='publish()'/></center>
+   <h1>Post a Comment on Hive</h1>
+   <input type="text" id="author" placeholder="Enter your username" />
+   <input type="password" id="wif" placeholder="Enter your private posting key" />
+   <input type="text" id="parentAuthor" placeholder="Post Author" />
+   <input type="text" id="parentPermlink" placeholder="Post Permlink" />
+   <textarea id="commentBody" placeholder="Write your comment..."></textarea>
+   <input type="text" id="beneficiaryAccounts" placeholder="Enter beneficiary accounts (comma-separated)" />
+   <input type="text" id="beneficiaryPercents" placeholder="Enter beneficiary percentages (comma-separated)" />
+   <input type="button" value="COMMENT" onClick='postComment()'/>
 </div>
 
-
 <script>
-function publish() {
+function postComment() {
    var wif = document.getElementById('wif').value;
-   var blank = '';
-   var firstTag = document.getElementById('tag1').value;
-   var secondTag = document.getElementById('tag2').value; 
-   var thirdTag = document.getElementById('tag3').value; 
-   var fourthTag = document.getElementById('tag4').value; 
-   var fifthtag = document.getElementById('tag5').value;
    var author = document.getElementById('author').value;
-   var permlink = document.getElementById('permlink').value;
-   var title = document.getElementById('title').value;
-   var content = document.getElementById('content').value;
-hive.broadcast.comment(
-   wif,
-   blank,
-   firstTag,
-   author,
-   permlink,
-   title,
-   content,
-   // json metadata (additional tags, app name)
-   { tags: [secondTag,thirdTag,fourthTag,fifthtag], 
-      app: 'MadGazan/v1.0' },
-   function (err, result) {
-     if (err)
-       alert('Error posting ' + err);
-     else
-       alert('Successfully posted');
+   var parentAuthor = document.getElementById('parentAuthor').value;
+   var parentPermlink = document.getElementById('parentPermlink').value;
+   var body = document.getElementById('commentBody').value;
+   var permlink = 'comment-' + new Date().getTime();
+   var beneficiaryAccounts = document.getElementById('beneficiaryAccounts').value.split(',').map(acc => acc.trim());
+   var beneficiaryPercents = document.getElementById('beneficiaryPercents').value.split(',').map(pct => parseInt(pct.trim()) * 100);
+
+   if (!wif || !author || !parentAuthor || !parentPermlink || !body) {
+      alert("Please fill in all fields.");
+      return;
    }
-);
+
+   var extensions = [];
+   if (beneficiaryAccounts.length > 0 && beneficiaryPercents.length > 0 && beneficiaryAccounts.length === beneficiaryPercents.length) {
+      var beneficiaries = beneficiaryAccounts.map((account, index) => ({ account: account, weight: beneficiaryPercents[index] }));
+      extensions = [[0, { beneficiaries: beneficiaries }]];
+   }
+
+   var jsonMetadata = JSON.stringify({
+      tags: ['comment'],
+      app: 'MadGazan/v1.0'
+   });
+
+   hive.broadcast.comment(
+      wif,
+      parentAuthor,
+      parentPermlink,
+      author,
+      permlink,
+      '',
+      body,
+      jsonMetadata,
+      function (err, result) {
+         if (err) {
+            alert('Error posting comment: ' + err);
+         } else {
+            alert('Comment posted successfully!');
+            setCommentOptions(wif, author, permlink, extensions);
+         }
+      }
+   );
 }
 
+function setCommentOptions(wif, author, permlink, extensions) {
+   hive.broadcast.commentOptions(
+      wif,
+      author,
+      permlink,
+      "1000000.000 HBD",
+      10000,
+      true,
+      true,
+      extensions,
+      function(err, result) {
+         if (err) {
+            alert("Error setting comment options: " + err);
+         } else {
+            alert("Beneficiaries set successfully!");
+         }
+      }
+   );
+}
 </script>
 </body>
 </html>
