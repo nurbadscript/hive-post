@@ -1,10 +1,3 @@
-// Mengonfigurasi Hive API
-hive.api.setOptions({ url: 'https://anyx.io' });
-hive.config.set('address_prefix', 'STM');
-hive.config.set('chain_id', 'beeab0de00000000000000000000000000000000000000000000000000000000');
-hive.config.set('alternative_api_endpoints', ['https://api.hive.blog', 'https://anyx.io']);
-
-// Fungsi untuk memposting komentar
 function postComment() {
     var wif = document.getElementById('wif').value;
     var author = document.getElementById('author').value;
@@ -43,7 +36,7 @@ function postComment() {
 
     var jsonMetadata = JSON.stringify({
         tags: ['comment'],
-        app: 'newPost/v1.0'
+        app: 'ecency/v1.0'
     });
 
     // Post Comment
@@ -73,7 +66,6 @@ function postComment() {
     );
 }
 
-// Fungsi untuk mengatur opsi comment
 function setCommentOptions(wif, author, permlink, extensions, callback) {
     if (extensions.length === 0) {
         callback(true); // Jika tidak ada beneficiaries, langsung sukses
